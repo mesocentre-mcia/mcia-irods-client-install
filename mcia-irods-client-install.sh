@@ -1,32 +1,23 @@
 #! /bin/bash
 
-random_string_charlist () {
-    charlist=$1
-    tr -dc "$charlist" < /dev/urandom | head -c $2
-}
-random_filename() {
-    random_string_charlist  "[:alnum:]" $1
-}
+# Configuration
 
-cleanup_build_dir() {
-    if test x$CLEANUP_BUILD_DIR = xyes ; then
-        rm -rf $BUILD_DIR
-    fi
-}
-
-check_ret() {
-    if test x$? != x0 ; then
-        cleanup_build_dir
-        exit -1
-    fi
-}
+PREFIX=/usr/local
 
 IRODS_VERSION=3.3.1
 MCIA_IRODS_UTILS_VERSION=0.1
 
+GSI_BUILD=no
+GLOBUS_MAJOR=5
+GLOBUS_MINOR=0
+GLOBUS_MICRO=4
+
+KRB5_BUILD=no
+
+# Parse command line 
+
 BUILD_DIR=/tmp/`random_filename 12`
 CLEANUP_BUILD_DIR=yes
-PREFIX=$BUILD_DIR/irods-$IRODS_VERSION
 
 while test $# -gt 0 ; do
     arg=$1
@@ -57,6 +48,31 @@ while test $# -gt 0 ; do
     esac
 done
 
+# some functions
+
+random_string_charlist () {
+    charlist=$1
+    tr -dc "$charlist" < /dev/urandom | head -c $2
+}
+random_filename() {
+    random_string_charlist  "[:alnum:]" $1
+}
+
+cleanup_build_dir() {
+    if test x$CLEANUP_BUILD_DIR = xyes ; then
+        rm -rf $BUILD_DIR
+    fi
+}
+
+check_ret() {
+    if test x$? != x0 ; then
+        cleanup_build_dir
+        exit -1
+    fi
+}
+
+# Do the job...
+
 IRODS_TAR=irods-$IRODS_VERSION.tgz
 IRODS_URL=https://github.com/irods/irods-legacy/archive/$IRODS_VERSION.tar.gz
 
@@ -66,10 +82,6 @@ MCIA_IRODS_UTILS_BUILD=mcia-irods-utils-$MCIA_IRODS_UTILS_VERSION
 MCIA_IRODS_UTILS_TAR=$MCIA_IRODS_UTILS_BUILD.tar.gz
 
 # config GSI
-GSI_BUILD=no
-GLOBUS_MAJOR=5
-GLOBUS_MINOR=0
-GLOBUS_MICRO=4
 GLOBUS_MM=$GLOBUS_MAJOR.$GLOBUS_MINOR
 GLOBUS_VERSION=$GLOBUS_MM.$GLOBUS_MICRO
 GLOBUS_FLAVOR=gcc64pthr
@@ -78,7 +90,6 @@ GLOBUS_TAR=$GLOBUS_INSTALLER.tar.bz2
 GLOBUS_URL=http://www.globus.org/ftppub/gt$GLOBUS_MAJOR/$GLOBUS_MM/$GLOBUS_VERSION/installers/src/$GLOBUS_TAR
 
 # config KERBEROS
-KRB5_BUILD=no
 KRB5_LOCATION=/usr
 
 IRODS_HOME=$PREFIX/iRODS
