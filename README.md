@@ -16,7 +16,7 @@ You will need the following tools
 * gcc/g++
 
 
-# Use
+# Install clients
 
 Choose the place where you want to install iRODS iCommands (call it `$HOME/local/irods`) and run:
 
@@ -30,4 +30,11 @@ chmod a+x mcia-irods-client-install.sh
 
 # run installation
 ./mcia-irods-client-install.sh --prefix $prefix
+```
+
+# Use
+
+When installation is finished, you need to load iCommands into your shell environment:
+```
+source $prefix/bashrc
 ```
