@@ -5,7 +5,7 @@
 PREFIX=/usr/local
 
 IRODS_VERSION=3.3.1
-MCIA_IRODS_UTILS_VERSION=0.1
+MCIA_IRODS_UTILS_VERSION=0.2
 
 GSI_BUILD=no
 GLOBUS_MAJOR=5
@@ -208,7 +208,8 @@ cd $BUILD_DIR
 tar -xvf $BUILD_DIR/$MCIA_IRODS_UTILS_TAR
 check_ret
 
-$BUILD_DIR/$MCIA_IRODS_UTILS_BUILD/install.sh --prefix=$IRODS_HOME
+cd $BUILD_DIR/$MCIA_IRODS_UTILS_BUILD
+python setup.py install --prefix=$IRODS_HOME
 
 cat > $PREFIX/init.bash <<EOF
 #! /bin/bash
@@ -257,12 +258,16 @@ fi
 EOF
 chmod a+x $PREFIX/init.bash
 
+PYTHON_PKG_DIR_SUFFIX=$(python -c "import sys, os; print os.sep.join(['python' + sys.version[:3], 'site-packages'])")
+IRODS_PYTHON_SITE_PKG_DIR=$IRODS_LIBDIR/$PYTHON_PKG_DIR_SUFFIX
+
 cat > $PREFIX/bashrc <<EOF
 #! /bin/bash
 
 # iCommands environment
 ( echo \$PATH | grep -q $IRODS_CLIENTS_BINDIR ) || export PATH=$IRODS_BINDIR:$IRODS_CLIENTS_BINDIR:\$PATH
 ( echo \$LD_LIBRARY_PATH | grep -q $IRODS_CLIENTS_LIBDIR ) || export LD_LIBRARY_PATH=$IRODS_LIBDIR:$IRODS_CLIENTS_LIBDIR:\$LD_LIBRARY_PATH
+( echo \$PYTHONPATH | grep -q $IRODS_PYTHON_SITE_PKG_DIR) || export PYTHONPATH=$IRODS_PYTHON_SITE_PKG_DIR:\$PYTHONPATH
 
 EOF
 
@@ -295,6 +300,7 @@ set              version              $IRODS_VERSION
 set              root                 $PREFIX
 set              bindir               \$root/iRODS/bin
 set              libdir               \$root/iRODS/lib
+set              pypkgdir             \$libdir/$PYTHON_PKG_DIR_SUFFIX 
 set              clients_bindir       \$root/iRODS/clients/bin
 set              clients_libdir       \$root/iRODS/clients/lib
 
@@ -305,6 +311,8 @@ prepend-path     LD_LIBRARY_PATH      \$clients_libdir
 
 prepend-path     PATH                 \$bindir
 prepend-path     LD_LIBRARY_PATH      \$libdir
+
+prepend-path     PYTHONPATH           \$pypkgdir
 
 EOF
 
