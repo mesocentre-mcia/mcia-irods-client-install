@@ -16,6 +16,14 @@ KRB5_BUILD=no
 
 # Parse command line 
 
+random_string_charlist () {
+    charlist=$1
+    tr -dc "$charlist" < /dev/urandom | head -c $2
+}
+random_filename() {
+    random_string_charlist  "[:alnum:]" $1
+}
+
 BUILD_DIR=/tmp/`random_filename 12`
 CLEANUP_BUILD_DIR=yes
 
@@ -49,14 +57,6 @@ while test $# -gt 0 ; do
 done
 
 # some functions
-
-random_string_charlist () {
-    charlist=$1
-    tr -dc "$charlist" < /dev/urandom | head -c $2
-}
-random_filename() {
-    random_string_charlist  "[:alnum:]" $1
-}
 
 cleanup_build_dir() {
     if test x$CLEANUP_BUILD_DIR = xyes ; then
@@ -269,6 +269,8 @@ cat > $PREFIX/bashrc <<EOF
 ( echo \$LD_LIBRARY_PATH | grep -q $IRODS_CLIENTS_LIBDIR ) || export LD_LIBRARY_PATH=$IRODS_LIBDIR:$IRODS_CLIENTS_LIBDIR:\$LD_LIBRARY_PATH
 ( echo \$PYTHONPATH | grep -q $IRODS_PYTHON_SITE_PKG_DIR) || export PYTHONPATH=$IRODS_PYTHON_SITE_PKG_DIR:\$PYTHONPATH
 
+# iCommands completion
+[ -f $IRODS_CLIENTS_BINDIR/irods_completion.bash ] && source $IRODS_CLIENTS_BINDIR/irods_completion.bash
 EOF
 
 if test x$? != x0 ; then
