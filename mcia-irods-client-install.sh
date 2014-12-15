@@ -5,7 +5,7 @@
 PREFIX=/usr/local
 
 IRODS_VERSION=3.3.1
-MCIA_IRODS_UTILS_VERSION=0.2.1
+MCIA_IRODS_UTILS_VERSION=0.3.0
 
 GSI_BUILD=no
 GLOBUS_MAJOR=5
@@ -249,6 +249,10 @@ irodsUserName '\$username'
 irodsDefResource \$defaultresource
 irodsAuthScheme password
 irodsAuthFileName \$HOME/.irods/.irods-mcia
+
+# mcia-irods-utils configuration
+irodsRescList 'irule(mciaRGListWrite)'
+irodsUseRescGroups true
 EOF2
 
     echo "iRODS configuration file \$envfile created"
