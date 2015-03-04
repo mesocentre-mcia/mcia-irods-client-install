@@ -228,7 +228,7 @@ if test ! -f \$envfile ; then
     icat=icat0.mcia.univ-bordeaux.fr
     port=1247
     zone=MCIA
-    username=$USER
+    username=\$USER
     defaultresource=siterg-ubx
 
     if test -n \$PS1 ; then
