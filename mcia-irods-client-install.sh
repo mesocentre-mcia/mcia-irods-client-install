@@ -287,6 +287,11 @@ if test x$? != x0 ; then
     exit -1
 fi
 
+LOAD_GLOBUS_MODULE="# not needed"
+if test "x$GSI_BUILD" = "xyes" ; then
+    LOAD_GLOBUS_MODULE="module load globus"
+fi
+
 cat > $PREFIX/modulefile <<EOF
 #%Module -*- tcl -*-
 ##
@@ -299,8 +304,8 @@ proc ModulesHelp { } {
 
 module-whatis "adds iRODS clients to your environment variables"
 
-# need globus environment
-module load globus
+# load globus environment
+$LOAD_GLOBUS_MODULE
 
 set              version              $IRODS_VERSION
 set              root                 $PREFIX
