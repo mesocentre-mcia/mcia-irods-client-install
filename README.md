@@ -38,3 +38,8 @@ When installation is finished, you need to load iCommands into your shell enviro
 ```
 source $prefix/bashrc
 ```
+
+The first time you use iRODS clients on a particular Unix accoutn, you can also use a little helper script to configure your iRODS environment:
+```
+source $prefix/init.bash
+```
