@@ -231,7 +231,7 @@ if test ! -f \$envfile ; then
     username=\$USER
     defaultresource=siterg-ubx
 
-    if test -n \$PS1 ; then
+    if test -n "\$PS1" ; then
         echo "Please answer a few questions:"
         read -e -p " - iCat host? " -i \$icat icat
         read -e -p " - iRODS port? " -i \$port port
