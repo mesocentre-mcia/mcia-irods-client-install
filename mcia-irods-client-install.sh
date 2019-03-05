@@ -171,7 +171,7 @@ if test x$KRB5_BUILD = xyes ; then
 fi
 
 pwd
-make icommands GSI_SSL=ssl GSI_CRYPTO=crypto
+CFLAGS="-fpermissive" make icommands GSI_SSL=ssl GSI_CRYPTO=crypto
 check_ret
 
 # move globus libraries to IRODS library path
