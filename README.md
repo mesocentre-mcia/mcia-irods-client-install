@@ -6,30 +6,34 @@
 
 [mcia-irods-client-install](https://github.com/mesocentre-mcia/mcia-irods-client-install) is design to work on Linux.
 
+Systems supported are CentOS 7 and Ubuntu 18.04 (later Ubuntu distributions may also work)
+
 You will need the following tools
 * bash
 * wget
-* tar
-* sed
-* make
-* perl
-* gcc/g++
+
+On CentOS, you will also need:
+* cpio
+* rpm2cpio
+
+On Ubuntu, you wil need instead:
+* dpkg-deb
 
 
 # Install clients
 
-Choose the place where you want to install iRODS iCommands (call it `$HOME/local/irods`) and run:
+Choose the place where you want to install iRODS iCommands (e.g. `$HOME/local/irods`) and run:
 
 ```
 # clients location
 prefix=$HOME/local/irods
 
 # get the script
-wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/master/mcia-irods-client-install.sh
-chmod a+x mcia-irods-client-install.sh
+wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/master/icommands-install.sh
+chmod a+x icommands-install.sh
 
 # run installation
-./mcia-irods-client-install.sh --prefix $prefix
+./icommands-install.sh --prefix $prefix
 ```
 
 # Use
@@ -38,10 +42,10 @@ When installation is finished, you need to load iCommands into your shell enviro
 ```
 # if running MacOs (with Zsh) you must run this first : 
 #     autoload bashcompinit ; bashcompinit
-source $prefix/bashrc
+source $prefix/share/irods/bashrc
 ```
 
-The first time you use iRODS clients on a particular Unix accoutn, you can also use a little helper script to configure your iRODS environment:
+As a MCIA user, you can also use a little helper script to configure your iRODS environment the first time you use iRODS clients on a particular Unix account:
 ```
-source $prefix/init.bash
+source $prefix/share/irods/init.bash
 ```
