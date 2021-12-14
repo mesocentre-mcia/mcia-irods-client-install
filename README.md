@@ -36,6 +36,8 @@ chmod a+x mcia-irods-client-install.sh
 
 When installation is finished, you need to load iCommands into your shell environment:
 ```
+# if running MacOs (with Zsh) you must run this first : 
+#     autoload bashcompinit ; bashcompinit
 source $prefix/bashrc
 ```
 
