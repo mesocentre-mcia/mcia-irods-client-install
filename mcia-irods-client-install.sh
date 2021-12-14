@@ -187,7 +187,7 @@ cp -p config/irods.config.template $IRODS_DOCDIR/
 cp -p -R $BUILD_DIR/iRODS/clients/icommands/test/rules3.0 $IRODS_DOCDIR/examples-rules3.0
 
 # copy icommands binaries
-irodsClientCommands=`find $BUILD_DIR/iRODS/clients/icommands/bin/ -maxdepth 1 -executable -type f`
+irodsClientCommands=`find $BUILD_DIR/iRODS/clients/icommands/bin/ -maxdepth 1 -executable -type f || find $BUILD_DIR/iRODS/clients/icommands/bin/ -maxdepth 1 -perm +111 -type f`
 for binary in $irodsClientCommands ; do
     cp -p $binary $IRODS_CLIENTS_BINDIR/
     check_ret
