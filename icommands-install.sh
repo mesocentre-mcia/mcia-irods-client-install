@@ -2,7 +2,7 @@
 
 # following instructions: https://groups.google.com/g/irod-chat/c/uOdt3pwOO7Y/m/_zPY_76zAQAJ
 
-irods_version=4.2.11-1~bionic
+irods_version=4.2.11
 install_prefix=$HOME/.local
 
 os=centos
@@ -65,8 +65,8 @@ $rpm_repo/irods-externals-fmt6.1.2-1-1.0-1.x86_64.rpm \
 $rpm_repo/irods-externals-zeromq4-14.1.6-0-1.0-1.x86_64.rpm \
 "
 
-icommands_deb=$deb_repo/irods-icommands/irods-icommands_${irods_version}_amd64.deb
-runtime_deb=$deb_repo/irods-runtime/irods-runtime_${irods_version}_amd64.deb
+icommands_deb=$deb_repo/irods-icommands/irods-icommands_${irods_version}-1~bionic_amd64.deb
+runtime_deb=$deb_repo/irods-runtime/irods-runtime_${irods_version}-1~bionic_amd64.deb
 
 externals_debs="\
 $deb_repo/irods-externals-avro1.9.0-0/irods-externals-avro1.9.0-0_1.0~bionic_amd64.deb \
