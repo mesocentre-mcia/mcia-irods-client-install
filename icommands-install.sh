@@ -2,7 +2,7 @@
 
 # following instructions: https://groups.google.com/g/irod-chat/c/uOdt3pwOO7Y/m/_zPY_76zAQAJ
 
-irods_version=4.2.11
+irods_version=4.2.11-1~bionic
 install_prefix=$HOME/.local
 
 os=centos
