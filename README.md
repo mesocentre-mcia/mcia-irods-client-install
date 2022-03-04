@@ -17,7 +17,7 @@ On CentOS, you will also need:
 * rpm2cpio
 
 On Ubuntu, you wil need instead:
-* dpkg-deb
+* dpkg-dev
 
 
 # Install clients
