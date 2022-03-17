@@ -1,4 +1,4 @@
-name: test-mcia-irods-client-install
+name: test-install
 
 on: [push]
 
