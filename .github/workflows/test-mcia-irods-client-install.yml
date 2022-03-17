@@ -7,14 +7,14 @@ jobs:
       - name: install requirments
         run: |
           export DEBIAN_FRONTEND=noninteractive
-          apt-get update
-          apt-get upgrade -y
-          apt-get install -y wget make libfile-copy-recursive-perl g++ python cpio rpm2cpio curl lsb-release
+          sudo apt-get update
+          sudo apt-get upgrade -y
+          sudo apt-get install -y wget make libfile-copy-recursive-perl g++ python cpio rpm2cpio curl lsb-release
       - name: Execute icommands-install.sh
         run: |
           # Script should *not* be run as root.
-          useradd -s /bin/bash -m -p test test
-          su - test
+          sudo useradd -s /bin/bash -m -p test test
+          sudo su - test
           export prefix=$HOME/local/irods
           wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
           chmod a+x icommands-install.sh
