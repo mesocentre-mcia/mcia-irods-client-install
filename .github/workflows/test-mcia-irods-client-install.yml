@@ -1,10 +1,13 @@
 name: test-mcia-irods-client-install
+
 on: [push]
+
 jobs:
+
   ubuntu-1804:
     runs-on: ubuntu-18.04
     steps:
-      - name: install requirments
+      - name: install requirements
         run: |
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
@@ -21,5 +24,6 @@ jobs:
           ./icommands-install.sh --prefix $prefix
       - name: test icommand installation
         run: |
+          export prefix=$HOME/local/irods
           source $prefix/share/irods/bashrc
           ils -h
