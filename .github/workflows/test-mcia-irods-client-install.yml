@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  ubuntu-18.04:
+  ubuntu-18-04:
     runs-on: ubuntu-18.04
     steps:
       - name: install requirements
@@ -30,7 +30,7 @@ jobs:
           ils -h
 
 
-  ubuntu-20.04:
+  ubuntu-20-04:
     runs-on: ubuntu-20.04
     steps:
       - name: install requirements
@@ -55,7 +55,7 @@ jobs:
           cat /etc/lsb-release
           ils -h
 
-  ubuntu-22.04:
+  ubuntu-22-04:
     runs-on: ubuntu-20.04
     container: 'ubuntu:22.04'
     steps:
@@ -82,7 +82,7 @@ jobs:
           ils -h
 
 
-  rockylinux-8.5:
+  rockylinux-8-5:
     runs-on: ubuntu-20.04
     container: 'rockylinux:8.5'
     steps:
