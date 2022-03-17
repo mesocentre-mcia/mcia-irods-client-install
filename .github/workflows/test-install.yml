@@ -28,3 +28,28 @@ jobs:
           source $prefix/share/irods/bashrc
           cat /etc/lsb-release
           ils -h
+
+  rockylinux-8-5:
+    runs-on: ubuntu-20.04
+    container: 'rockylinux:8.5'
+    steps:
+      - name: install requirements
+        run: |
+          yum update
+          # compat-openssl10 to avoid "error while loading shared libraries: libssl.so.10"
+          yum install -y -q  wget cpio make findutils compat-openssl10
+      - name: execute icommands-install.sh
+        run: |
+          # Script should *not* be run as root.
+          sudo useradd -s /bin/bash -m -p test test
+          sudo su - test
+          export prefix=$HOME/local/irods
+          wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
+          chmod a+x icommands-install.sh
+          ./icommands-install.sh --prefix $prefix
+      - name: test icommand installation
+        run: |
+          export prefix=$HOME/local/irods
+          source $prefix/share/irods/bashrc
+          cat /etc/lsb-release
+          ils -h
