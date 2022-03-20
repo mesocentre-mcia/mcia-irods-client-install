@@ -89,6 +89,7 @@ jobs:
           echo "# Execute icommands-install.sh script (prefix=$prefix)"
           ./icommands-install.sh --prefix $prefix
       - name: test icommand installation
+        shell: bash
         run: |
           export prefix=$HOME/local/irods
           echo "# Source $prefix/share/irods/bashrc"
