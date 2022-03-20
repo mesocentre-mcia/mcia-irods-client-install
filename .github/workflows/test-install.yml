@@ -15,18 +15,24 @@ jobs:
           sudo apt-get install -y wget make libfile-copy-recursive-perl g++ python cpio rpm2cpio curl lsb-release
       - name: execute icommands-install.sh
         run: |
+          echo '# Use user test'
           # Script should *not* be run as root.
           sudo useradd -s /bin/bash -m -p test test
           sudo su - test
           export prefix=$HOME/local/irods
+          echo '# Download icommands-install.sh script'
           wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
           chmod a+x icommands-install.sh
+          echo "# Execute icommands-install.sh script (prefix=$prefix)"
           ./icommands-install.sh --prefix $prefix
       - name: test icommand installation
         run: |
           export prefix=$HOME/local/irods
+          echo "# Source $prefix/share/irods/bashrc"
           source $prefix/share/irods/bashrc
+          echo '# Release:'
           cat /etc/lsb-release
+          iecho '# ils -h'
           ils -h
 
   rockylinux-8-5:
@@ -40,16 +46,22 @@ jobs:
           yum install -y -q  wget cpio make findutils compat-openssl10
       - name: execute icommands-install.sh
         run: |
+          echo '# Use user test'
           # Script should *not* be run as root.
           useradd -s /bin/bash -m -p test test
           su - test
           export prefix=$HOME/local/irods
+          echo '# Download icommands-install.sh script'
           wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
           chmod a+x icommands-install.sh
+          echo "# Execute icommands-install.sh script (prefix=$prefix)"
           ./icommands-install.sh --prefix $prefix
       - name: test icommand installation
         run: |
           export prefix=$HOME/local/irods
+          echo "# Source $prefix/share/irods/bashrc"
           source $prefix/share/irods/bashrc
+          echo '# Release:'
           cat /etc/redhat-release
+          echo '# Release:'
           ils -h
