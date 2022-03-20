@@ -32,8 +32,8 @@ jobs:
           source $prefix/share/irods/bashrc
           echo '# Release:'
           cat /etc/lsb-release
-          echo '# ils -h'
-          ils -h
+          echo '# ils -h | grep Version'
+          ils -h | grep 'Version'
 
   ubuntu-20-04:
     runs-on: ubuntu-20.04
@@ -63,8 +63,8 @@ jobs:
           source $prefix/share/irods/bashrc
           echo '# Release:'
           cat /etc/lsb-release
-          echo '# ils -h'
-          ils -h
+          echo '# ils -h | grep Version'
+          ils -h | grep 'Version'
 
   ubuntu-22-04:
     runs-on: ubuntu-20.04
@@ -73,15 +73,15 @@ jobs:
       - name: install requirements
         run: |
           export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update
-          sudo apt-get upgrade -y
-          sudo apt-get install -y wget make libfile-copy-recursive-perl g++ python3 cpio rpm2cpio curl lsb-release libssl1.1
+          apt-get update
+          apt-get upgrade -y
+          apt-get install -y wget make libfile-copy-recursive-perl g++ python3 cpio rpm2cpio curl lsb-release libssl1.1
       - name: execute icommands-install.sh
         run: |
           echo '# Use user test'
           # Script should *not* be run as root.
-          sudo useradd -s /bin/bash -m -p test test
-          sudo su - test
+          useradd -s /bin/bash -m -p test test
+          su - test
           export prefix=$HOME/local/irods
           echo '# Download icommands-install.sh script'
           wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
@@ -95,8 +95,8 @@ jobs:
           source $prefix/share/irods/bashrc
           echo '# Release:'
           cat /etc/lsb-release
-          echo '# ils -h'
-          ils -h
+          echo '# ils -h | grep Version'
+          ils -h | grep 'Version'
 
   rockylinux-8-5:
     runs-on: ubuntu-20.04
@@ -126,5 +126,5 @@ jobs:
           source $prefix/share/irods/bashrc
           echo '# Release:'
           cat /etc/redhat-release
-          echo '# Release:'
-          ils -h
+          echo '# ils -h | grep Version'
+          ils -h | grep 'Version'
