@@ -6,17 +6,33 @@ jobs:
 
   ubuntu-18-04:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container: ["ubuntu:18.04", "ubuntu:20.04"]
-    container: "${{ matrix.container }}"
+    container: 'ubuntu:18.04'
     steps:
-      - name: install requirements
+      - name: Requirements
         run: |
           export DEBIAN_FRONTEND=noninteractive
           apt-get update
           apt-get upgrade -y
           apt-get install -y wget make libfile-copy-recursive-perl g++ python cpio rpm2cpio curl lsb-release
+      - uses: actions/checkout@v2
+      - name: Run icommands-install.sh
+        run: ./.github/scripts/install.sh
+        shell: bash
+      - name: Test icommands
+        run: ./.github/scripts/test.sh
+        shell: bash
+
+  ubuntu-20-04:
+    runs-on: ubuntu-latest
+    container: 'ubuntu:20.04'
+    steps:
+      - name: Requirements
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          apt-get install -y wget make libfile-copy-recursive-perl g++ python cpio rpm2cpio curl lsb-release
+      - uses: actions/checkout@v2
       - name: Run icommands-install.sh
         run: ./.github/scripts/install.sh
         shell: bash
@@ -34,6 +50,7 @@ jobs:
           apt-get update
           apt-get upgrade -y
           apt-get install -y wget make libfile-copy-recursive-perl g++ python3 cpio rpm2cpio curl lsb-release libssl1.1
+      - uses: actions/checkout@v2
       - name: Run icommands-install.sh
         run: ./.github/scripts/install.sh
         shell: bash
@@ -50,6 +67,7 @@ jobs:
           yum update -y
           # compat-openssl10 to avoid "error while loading shared libraries: libssl.so.10"
           yum install -y -q  wget cpio make findutils compat-openssl10
+      - uses: actions/checkout@v2
       - name: Run icommands-install.sh
         run: ./.github/scripts/install.sh
         shell: bash
