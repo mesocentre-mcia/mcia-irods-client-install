@@ -41,8 +41,8 @@ jobs:
       - name: execute icommands-install.sh
         run: |
           # Script should *not* be run as root.
-          sudo useradd -s /bin/bash -m -p test test
-          sudo su - test
+          useradd -s /bin/bash -m -p test test
+          su - test
           export prefix=$HOME/local/irods
           wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
           chmod a+x icommands-install.sh
