@@ -2,12 +2,12 @@
 
 set -x
 
-echo "# Source $prefix/share/irods/bashrc"
+# Source $prefix/share/irods/bashrc
 export prefix=$HOME/local/irods
 source $prefix/share/irods/bashrc
 
-echo '# Release:'
+# Release:
 cat /etc/lsb-release /etc/redhat-release
 
-echo '# ils -h | grep Version'
+# Check ils version
 ils -h | grep 'Version'
