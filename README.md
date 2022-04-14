@@ -29,7 +29,7 @@ Choose the place where you want to install iRODS iCommands (e.g. `$HOME/local/ir
 prefix=$HOME/local/irods
 
 # get the script
-wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/irods4/icommands-install.sh
+wget https://raw.githubusercontent.com/mesocentre-mcia/mcia-irods-client-install/master/icommands-install.sh
 chmod a+x icommands-install.sh
 
 # run installation
