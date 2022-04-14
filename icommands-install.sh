@@ -170,6 +170,12 @@ if test ! -f \$envfile ; then
   "irods_port": \$port,
   "irods_user_name": "\$username",
   "irods_zone_name": "\$zone",
+  "irods_encryption_algorithm": "AES-256-CBC",
+  "irods_encryption_key_size": 32,
+  "irods_encryption_num_hash_rounds": 16,
+  "irods_encryption_salt_size": 8,
+  "irods_client_server_negotiation": "request_server_negotiation",
+  "irods_client_server_policy": "CS_NEG_REQUIRE"
 }
 EOF2
 
