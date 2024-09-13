@@ -5,7 +5,7 @@
 irods_version=4.3.1
 install_prefix=$HOME/.local
 
-os=el9
+lsb_release -si | grep -qi Rocky && os=el$(lsb_release -sr | cut -d"." -f1)
 lsb_release -si | grep -qi ubuntu && os=ubuntu
 
 module_dir=/no-module
@@ -33,6 +33,9 @@ while test $# -gt 0 ; do
             ;;
         --ubuntu)
             os=ubuntu
+            ;;
+        --el8)
+            os=el8
             ;;
         --el9)
             os=el9
@@ -69,15 +72,15 @@ function pkg_url() {
 rpm_repo=https://packages.irods.org/yum/pool/$os/x86_64
 deb_repo=https://packages.irods.org/apt/pool/bionic/main/i
 
-icommands_rpm=$(pkg_url "$rpm_repo/irods-icommands-$irods_version-" ".el9.x86_64.rpm")
-runtime_rpm=$(pkg_url "$rpm_repo/irods-runtime-$irods_version-" ".el9.x86_64.rpm")
+icommands_rpm=$(pkg_url "$rpm_repo/irods-icommands-$irods_version-" ".$os.x86_64.rpm")
+runtime_rpm=$(pkg_url "$rpm_repo/irods-runtime-$irods_version-" ".$os.x86_64.rpm")
 
 externals_rpms="\
-$rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.el9.x86_64.rpm \
-$rpm_repo/irods-externals-boost-libcxx1.81.0-1-1.0-0.el9.x86_64.rpm \
+$rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.$os.x86_64.rpm \
+$rpm_repo/irods-externals-boost-libcxx1.81.0-1-1.0-0.$os.x86_64.rpm \
 $rpm_repo/irods-externals-clang-runtime13.0.0-0-1.0-1.x86_64.rpm \
 $rpm_repo/irods-externals-fmt8.1.1-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.el9.x86_64.rpm \
+$rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.$os.x86_64.rpm \
 "
 
 icommands_deb=$(pkg_url "$deb_repo/irods-icommands/irods-icommands_${irods_version}-" "~bionic_amd64.deb")
