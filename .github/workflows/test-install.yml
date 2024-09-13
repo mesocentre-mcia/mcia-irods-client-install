@@ -81,3 +81,20 @@ jobs:
       - name: Test icommands
         run: ./.github/scripts/test.sh
         shell: bash
+
+  rockylinux-9-4:
+    runs-on: ubuntu-latest
+    container: 'rockylinux:9.4'
+    steps:
+      - name: Requirements
+        run: |
+          yum update -y
+          # openssl-libs to avoid "error while loading shared libraries: libcrypto.so.3: cannot open shared object file: No such file or directory"
+          yum install -y -q wget cpio make findutils openssl-libs
+      - uses: actions/checkout@v2
+      - name: Run icommands-install.sh
+        run: ./.github/scripts/install.sh
+        shell: bash
+      - name: Test icommands
+        run: ./.github/scripts/test.sh
+        shell: bash
