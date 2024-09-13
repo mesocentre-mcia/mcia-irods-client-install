@@ -2,10 +2,10 @@
 
 # following instructions: https://groups.google.com/g/irod-chat/c/uOdt3pwOO7Y/m/_zPY_76zAQAJ
 
-irods_version=4.2.11
+irods_version=4.3.1
 install_prefix=$HOME/.local
 
-os=centos
+os=el9
 lsb_release -si | grep -qi ubuntu && os=ubuntu
 
 module_dir=/no-module
@@ -34,8 +34,8 @@ while test $# -gt 0 ; do
         --ubuntu)
             os=ubuntu
             ;;
-        --centos)
-            os=centos
+        --el9)
+            os=el9
             ;;
         --debug)
             echo debug mode
@@ -51,18 +51,18 @@ while test $# -gt 0 ; do
     esac
 done
 
-rpm_repo=https://packages.irods.org/yum/pool/centos7/x86_64
+rpm_repo=https://packages.irods.org/yum/pool/$os/x86_64
 deb_repo=https://packages.irods.org/apt/pool/bionic/main/i
 
-icommands_rpm=$rpm_repo/irods-icommands-$irods_version-1.x86_64.rpm
-runtime_rpm=$rpm_repo/irods-runtime-$irods_version-1.x86_64.rpm
+icommands_rpm=$rpm_repo/irods-icommands-$irods_version-0.el9.x86_64.rpm
+runtime_rpm=$rpm_repo/irods-runtime-$irods_version-0.el9.x86_64.rpm
 
 externals_rpms="\
-$rpm_repo/irods-externals-avro1.9.0-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-boost1.67.0-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-clang-runtime6.0-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-fmt6.1.2-1-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-zeromq4-14.1.6-0-1.0-1.x86_64.rpm \
+$rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.el9.x86_64.rpm \
+$rpm_repo/irods-externals-boost-libcxx1.81.0-1-1.0-0.el9.x86_64.rpm \
+$rpm_repo/irods-externals-clang-runtime13.0.0-0-1.0-1.x86_64.rpm \
+$rpm_repo/irods-externals-fmt8.1.1-0-1.0-1.x86_64.rpm \
+$rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.el9.x86_64.rpm \
 "
 
 icommands_deb=$deb_repo/irods-icommands/irods-icommands_${irods_version}-1~bionic_amd64.deb
