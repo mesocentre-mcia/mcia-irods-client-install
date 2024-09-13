@@ -51,11 +51,26 @@ while test $# -gt 0 ; do
     esac
 done
 
+function pkg_url() {
+    local url=$1
+    local suffix=$2
+
+    for i in $(seq 0 10) ; do
+        #echo trying $url-$i$suffix
+        if curl -s -I $url$i$suffix | grep "HTTP/1.1 200" > /dev/null ; then
+            echo $url$i$suffix
+            return
+        fi
+    done
+
+    echo $url
+}
+
 rpm_repo=https://packages.irods.org/yum/pool/$os/x86_64
 deb_repo=https://packages.irods.org/apt/pool/bionic/main/i
 
-icommands_rpm=$rpm_repo/irods-icommands-$irods_version-0.el9.x86_64.rpm
-runtime_rpm=$rpm_repo/irods-runtime-$irods_version-0.el9.x86_64.rpm
+icommands_rpm=$(pkg_url "$rpm_repo/irods-icommands-$irods_version-" ".el9.x86_64.rpm")
+runtime_rpm=$(pkg_url "$rpm_repo/irods-runtime-$irods_version-" ".el9.x86_64.rpm")
 
 externals_rpms="\
 $rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.el9.x86_64.rpm \
@@ -65,8 +80,8 @@ $rpm_repo/irods-externals-fmt8.1.1-0-1.0-1.x86_64.rpm \
 $rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.el9.x86_64.rpm \
 "
 
-icommands_deb=$deb_repo/irods-icommands/irods-icommands_${irods_version}-1~bionic_amd64.deb
-runtime_deb=$deb_repo/irods-runtime/irods-runtime_${irods_version}-1~bionic_amd64.deb
+icommands_deb=$(pkg_url "$deb_repo/irods-icommands/irods-icommands_${irods_version}-" "~bionic_amd64.deb")
+runtime_deb=$(pkg_url "$deb_repo/irods-runtime/irods-runtime_${irods_version}-" "~bionic_amd64.deb")
 
 externals_debs="\
 $deb_repo/irods-externals-avro1.9.0-0/irods-externals-avro1.9.0-0_1.0~bionic_amd64.deb \
