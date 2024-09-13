@@ -73,7 +73,7 @@ jobs:
         run: |
           yum update -y
           # compat-openssl10 to avoid "error while loading shared libraries: libssl.so.10"
-          yum install -y -q  wget cpio make findutils compat-openssl10
+          yum install -y -q  wget cpio make findutils compat-openssl10 openssl-libs
       - uses: actions/checkout@v2
       - name: Run icommands-install.sh
         run: ./.github/scripts/install.sh
@@ -82,9 +82,9 @@ jobs:
         run: ./.github/scripts/test.sh
         shell: bash
 
-  rockylinux-9-4:
+  rockylinux-9-3:
     runs-on: ubuntu-latest
-    container: 'rockylinux:9.4'
+    container: 'rockylinux:9.3'
     steps:
       - name: Requirements
         run: |
