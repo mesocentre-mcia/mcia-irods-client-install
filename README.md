@@ -6,15 +6,15 @@
 
 [mcia-irods-client-install](https://github.com/mesocentre-mcia/mcia-irods-client-install) is design to work on Linux.
 
-Systems supported are CentOS 7 and Ubuntu 18.04 (later Ubuntu distributions may also work)
+Systems supported are EL9 and Ubuntu 18.04 (later Ubuntu distributions may also work)
 
 You will need the following tools
 * bash
 * wget
 
-On CentOS, you will also need:
+On EL9, you will also need:
 * cpio
-* rpm2cpio
+* perl
 
 On Ubuntu, you wil need instead:
 * dpkg-dev
