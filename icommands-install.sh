@@ -5,8 +5,8 @@
 irods_version=4.3.1
 install_prefix=$HOME/.local
 
-lsb_release -si | grep -qi Rocky && os=el$(lsb_release -sr | cut -d"." -f1)
-lsb_release -si | grep -qi ubuntu && os=ubuntu
+lsb_release -si | grep -qi Rocky && os=RedHat && variant=el$(lsb_release -sr | cut -d"." -f1)
+lsb_release -si | grep -qi ubuntu && os=ubuntu && variant=$(lsb_release -sc)
 
 module_dir=/no-module
 
@@ -69,29 +69,29 @@ function pkg_url() {
     echo $url
 }
 
-rpm_repo=https://packages.irods.org/yum/pool/$os/x86_64
-deb_repo=https://packages.irods.org/apt/pool/bionic/main/i
+rpm_repo=https://packages.irods.org/yum/pool/${variant}/x86_64
+deb_repo=https://packages.irods.org/apt/pool/${variant}/main/i
 
-icommands_rpm=$(pkg_url "$rpm_repo/irods-icommands-$irods_version-" ".$os.x86_64.rpm")
-runtime_rpm=$(pkg_url "$rpm_repo/irods-runtime-$irods_version-" ".$os.x86_64.rpm")
+icommands_rpm=$(pkg_url "$rpm_repo/irods-icommands-$irods_version-" ".${variant}.x86_64.rpm")
+runtime_rpm=$(pkg_url "$rpm_repo/irods-runtime-$irods_version-" ".${variant}.x86_64.rpm")
 
 externals_rpms="\
-$rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.$os.x86_64.rpm \
-$rpm_repo/irods-externals-boost-libcxx1.81.0-1-1.0-0.$os.x86_64.rpm \
+$rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.${variant}.x86_64.rpm \
+$rpm_repo/irods-externals-boost-libcxx1.81.0-1-1.0-0.${variant}.x86_64.rpm \
 $rpm_repo/irods-externals-clang-runtime13.0.0-0-1.0-1.x86_64.rpm \
 $rpm_repo/irods-externals-fmt8.1.1-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.$os.x86_64.rpm \
+$rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.${variant}.x86_64.rpm \
 "
 
-icommands_deb=$(pkg_url "$deb_repo/irods-icommands/irods-icommands_${irods_version}-" "~bionic_amd64.deb")
-runtime_deb=$(pkg_url "$deb_repo/irods-runtime/irods-runtime_${irods_version}-" "~bionic_amd64.deb")
+icommands_deb=$(pkg_url "$deb_repo/irods-icommands/irods-icommands_${irods_version}-" "~${variant}_amd64.deb")
+runtime_deb=$(pkg_url "$deb_repo/irods-runtime/irods-runtime_${irods_version}-" "~${variant}_amd64.deb")
 
 externals_debs="\
-$deb_repo/irods-externals-avro1.9.0-0/irods-externals-avro1.9.0-0_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-boost1.67.0-0/irods-externals-boost1.67.0-0_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-clang6.0-0/irods-externals-clang6.0-0_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-fmt6.1.2-1/irods-externals-fmt6.1.2-1_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-zeromq4-14.1.6-0/irods-externals-zeromq4-14.1.6-0_1.0~bionic_amd64.deb \
+$deb_repo/irods-externals-avro-libcxx1.11.0-3/irods-externals-avro-libcxx1.11.0-3_1.0-0~${variant}_amd64.deb \
+$deb_repo/irods-externals-boost-libcxx1.81.0-1/irods-externals-boost-libcxx1.81.0-1_1.0-0~${variant}_amd64.deb \
+$deb_repo/irods-externals-clang-runtime13.0.0-0/irods-externals-clang-runtime13.0.0-0_1.0~${variant}_amd64.deb \
+$deb_repo/irods-externals-fmt8.1.1-0/irods-externals-fmt8.1.1-0_1.0~${variant}_amd64.deb \
+$deb_repo/irods-externals-zeromq4-1-libcxx4.1.8-1/irods-externals-zeromq4-1-libcxx4.1.8-1_1.0-0~${variant}_amd64.deb \
 "
 
 function rpm_extract() {
