@@ -22,30 +22,41 @@ jobs:
         run: ./.github/scripts/test.sh
         shell: bash
 
-# Ubuntu 22.04 failed:
-# ils: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory
-#
-# Ubuntu 22.04 has dropped libssl1.1 in favour of libssl3 (see OpenSSL 3.0 transition plans for reference),
-#
-# See later (stable release not published), how to fix it
-#
-#  ubuntu-22-04:
-#    runs-on: ubuntu-latest
-#    container: 'ubuntu:22.04'
-#    steps:
-#      - name: Requirements
-#        run: |
-#          export DEBIAN_FRONTEND=noninteractive
-#          apt-get update
-#          apt-get upgrade -y
-#          apt-get install -y wget make libfile-copy-recursive-perl g++ python3 cpio rpm2cpio curl lsb-release libssl1.1
-#      - uses: actions/checkout@v2
-#      - name: Run icommands-install.sh
-#        run: ./.github/scripts/install.sh
-#        shell: bash
-#      - name: Test icommands
-#        run: ./.github/scripts/test.sh
-#        shell: bash
+  ubuntu-22-04:
+   runs-on: ubuntu-latest
+   container: 'ubuntu:22.04'
+   steps:
+     - name: Requirements
+       run: |
+         export DEBIAN_FRONTEND=noninteractive
+         apt-get update
+         apt-get upgrade -y
+         apt-get install -y wget make libfile-copy-recursive-perl g++ python3 cpio rpm2cpio curl lsb-release libssl-dev libcurl3-gnutls
+     - uses: actions/checkout@v2
+     - name: Run icommands-install.sh
+       run: ./.github/scripts/install.sh
+       shell: bash
+     - name: Test icommands
+       run: ./.github/scripts/test.sh
+       shell: bash
+
+  ubuntu-24-04:
+    runs-on: ubuntu-latest
+    container: 'ubuntu:24.04'
+    steps:
+      - name: Requirements
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          apt-get install -y wget make libfile-copy-recursive-perl g++ python3 cpio rpm2cpio curl lsb-release libssl-dev libcurl3t64-gnutls
+      - uses: actions/checkout@v2
+      - name: Run icommands-install.sh
+        run: ./.github/scripts/install.sh
+        shell: bash
+      - name: Test icommands
+        run: ./.github/scripts/test.sh
+        shell: bash
 
   rockylinux-8-5:
     runs-on: ubuntu-latest
