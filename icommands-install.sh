@@ -2,11 +2,11 @@
 
 # following instructions: https://groups.google.com/g/irod-chat/c/uOdt3pwOO7Y/m/_zPY_76zAQAJ
 
-irods_version=4.2.11
+irods_version=4.3.1
 install_prefix=$HOME/.local
 
-os=centos
-lsb_release -si | grep -qi ubuntu && os=ubuntu
+lsb_release -si | grep -qi Rocky && os=RedHat && variant=el$(lsb_release -sr | cut -d"." -f1)
+lsb_release -si | grep -qi ubuntu && os=ubuntu && variant=$(lsb_release -sc)
 
 module_dir=/no-module
 
@@ -34,8 +34,11 @@ while test $# -gt 0 ; do
         --ubuntu)
             os=ubuntu
             ;;
-        --centos)
-            os=centos
+        --el8)
+            os=el8
+            ;;
+        --el9)
+            os=el9
             ;;
         --debug)
             echo debug mode
@@ -51,30 +54,60 @@ while test $# -gt 0 ; do
     esac
 done
 
-rpm_repo=https://packages.irods.org/yum/pool/centos7/x86_64
-deb_repo=https://packages.irods.org/apt/pool/bionic/main/i
+function pkg_url() {
+    local url=$1
+    local suffix=$2
 
-icommands_rpm=$rpm_repo/irods-icommands-$irods_version-1.x86_64.rpm
-runtime_rpm=$rpm_repo/irods-runtime-$irods_version-1.x86_64.rpm
+    for i in $(seq 0 10) ; do
+        #echo trying $url-$i$suffix
+        if curl -s -I $url$i$suffix | grep "HTTP/1.1 200" > /dev/null ; then
+            echo $url$i$suffix
+            return
+        fi
+    done
+
+    echo $url
+}
+
+if [ "$variant" = noble ] ; then
+    #irods_version=4.3.3
+    variant=jammy
+fi
+
+rpm_repo=https://packages.irods.org/yum/pool/${variant}/x86_64
+deb_repo=https://packages.irods.org/apt/pool/${variant}/main/i
+
+icommands_rpm=$(pkg_url "$rpm_repo/irods-icommands-$irods_version-" ".${variant}.x86_64.rpm")
+runtime_rpm=$(pkg_url "$rpm_repo/irods-runtime-$irods_version-" ".${variant}.x86_64.rpm")
 
 externals_rpms="\
-$rpm_repo/irods-externals-avro1.9.0-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-boost1.67.0-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-clang-runtime6.0-0-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-fmt6.1.2-1-1.0-1.x86_64.rpm \
-$rpm_repo/irods-externals-zeromq4-14.1.6-0-1.0-1.x86_64.rpm \
+$rpm_repo/irods-externals-avro-libcxx1.11.0-3-1.0-0.${variant}.x86_64.rpm \
+$rpm_repo/irods-externals-boost-libcxx1.81.0-1-1.0-0.${variant}.x86_64.rpm \
+$rpm_repo/irods-externals-clang-runtime13.0.0-0-1.0-1.x86_64.rpm \
+$rpm_repo/irods-externals-fmt8.1.1-0-1.0-1.x86_64.rpm \
+$rpm_repo/irods-externals-zeromq4-1-libcxx4.1.8-1-1.0-0.${variant}.x86_64.rpm \
 "
 
-icommands_deb=$deb_repo/irods-icommands/irods-icommands_${irods_version}-1~bionic_amd64.deb
-runtime_deb=$deb_repo/irods-runtime/irods-runtime_${irods_version}-1~bionic_amd64.deb
+icommands_deb=$(pkg_url "$deb_repo/irods-icommands/irods-icommands_${irods_version}-" "~${variant}_amd64.deb")
+runtime_deb=$(pkg_url "$deb_repo/irods-runtime/irods-runtime_${irods_version}-" "~${variant}_amd64.deb")
 
-externals_debs="\
-$deb_repo/irods-externals-avro1.9.0-0/irods-externals-avro1.9.0-0_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-boost1.67.0-0/irods-externals-boost1.67.0-0_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-clang6.0-0/irods-externals-clang6.0-0_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-fmt6.1.2-1/irods-externals-fmt6.1.2-1_1.0~bionic_amd64.deb \
-$deb_repo/irods-externals-zeromq4-14.1.6-0/irods-externals-zeromq4-14.1.6-0_1.0~bionic_amd64.deb \
-"
+if [ "$variant" = noble ] ; then
+    externals_debs="\
+    $deb_repo/irods-externals-avro-libcxx1.11.0-3/irods-externals-avro-libcxx1.11.0-3_1.0-1~${variant}_amd64.deb \
+    $deb_repo/irods-externals-boost-libcxx1.81.0-1/irods-externals-boost-libcxx1.81.0-1_1.0-1~${variant}_amd64.deb \
+    $deb_repo/irods-externals-clang-runtime13.0.1-0/irods-externals-clang-runtime13.0.1-0_1.0-1~${variant}_amd64.deb \
+    $deb_repo/irods-externals-fmt8.1.1-1/irods-externals-fmt8.1.1-1_1.0-1~${variant}_amd64.deb \
+    $deb_repo/irods-externals-zeromq4-1-libcxx4.1.8-1/irods-externals-zeromq4-1-libcxx4.1.8-1_1.0-2~${variant}_amd64.deb \
+    "
+else
+    externals_debs="\
+    $deb_repo/irods-externals-avro-libcxx1.11.0-3/irods-externals-avro-libcxx1.11.0-3_1.0-0~${variant}_amd64.deb \
+    $deb_repo/irods-externals-boost-libcxx1.81.0-1/irods-externals-boost-libcxx1.81.0-1_1.0-0~${variant}_amd64.deb \
+    $deb_repo/irods-externals-clang-runtime13.0.0-0/irods-externals-clang-runtime13.0.0-0_1.0~${variant}_amd64.deb \
+    $deb_repo/irods-externals-fmt8.1.1-0/irods-externals-fmt8.1.1-0_1.0~${variant}_amd64.deb \
+    $deb_repo/irods-externals-zeromq4-1-libcxx4.1.8-1/irods-externals-zeromq4-1-libcxx4.1.8-1_1.0-0~${variant}_amd64.deb
+    "
+fi
 
 function rpm_extract() {
     rpm2cpio $1 | cpio -idm
